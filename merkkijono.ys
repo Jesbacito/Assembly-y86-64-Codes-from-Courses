@@ -1,0 +1,32 @@
+# käytetty apuna tekoälyä
+
+.pos 0x400
+taulukko:
+    .align 8
+    .quad 0x59    # Merkki 'Y'
+    .quad 0x4c    # Merkki 'L'
+    .quad 0x57    # Merkki 'W'
+    .quad 0x4e    # Merkki 'N'
+    .quad 0x43    # Merkki 'C'
+    .quad 0x5a    # Merkki 'Z'
+    .quad 0x42    # Merkki 'B'
+    .quad 0x4c    # Merkki 'L'
+
+.pos 0
+main:
+    irmovq $0x400, %rdi     # Lataa osoite 0x400 (%rdi on merkkijonon alkuosoite)
+    irmovq $0, %rax         # Alustetaan pituusrekisteri %rax nollaksi
+    irmovq $8, %rsi         # Asetetaan %rsi arvoon 8 (muistin siirtoa varten)
+
+loop:
+    mrmovq (%rdi), %rcx     # Lataa 8 tavua osoitteesta (%rdi) rekisteriin %rcx
+    andq %rcx, %rcx         # Tarkistetaan onko %rcx nolla
+    je done                 # Jos nolla, lopetetaan
+    addq %rsi, %rdi         # Siirrytään seuraavaan 8 tavun muistiosoitteeseen
+    irmovq $1, %rdx         # Asetetaan %rdx arvoon 1
+    addq %rdx, %rax         # Lisätään 1 pituuteen (%rax)
+    jmp loop                # Toistetaan silmukkaa
+
+done:
+    halt                    # Ohjelman lopetus
+    

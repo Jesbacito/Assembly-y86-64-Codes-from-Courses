@@ -1,0 +1,21 @@
+# käytetty apuna tekoälyä ChatGPT
+
+main:
+    irmovq $0, %rax        # Alustetaan %rax (tulos) nollaksi
+    irmovq $0, %rcx        # Asetetaan laskuri (%rcx) nollaksi (tuloslaskuri)
+    irmovq $1, %rdx        # Asetetaan %rdx arvoon 1 (käytetään laskurin kasvatuksessa)
+
+check_zero:
+    rrmovq %rdi, %rbx   # Kopioidaan %rdi rekisteriin %rbx vertailua varten
+    subq %rsi, %rbx     # Vähennetään jakaja %rsi rekisteristä %rbx
+    jl done             # Hypätään loppuun, jos tulos on negatiivinen
+
+subtract:
+    subq %rsi, %rdi        # Vähennetään jakaja (%rsi) jaettavasta (%rdi)
+    addq %rdx, %rcx        # Kasvatetaan laskuria (%rcx) yhdellä
+    jmp check_zero         # Toistetaan, kunnes jaettava on pienempi kuin jakaja
+
+done:
+    rrmovq %rcx, %rax      # Asetetaan tulos laskurista (%rcx) rekisteriin %rax
+    halt                   # Lopeta ohjelman suoritus
+    
