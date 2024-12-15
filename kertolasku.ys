@@ -1,0 +1,14 @@
+main:
+    irmovq $0, %rax        # Alustetaan %rax (tulos) nollaksi
+    andq %rsi, %rsi        # Tarkista, onko kerroin (%rsi) nolla
+    je done                # Jos kerroin on nolla, hyppää ohjelman loppuun
+
+loop:
+    addq %rdi, %rax        # Lisää kerrottava (%rdi) tulokseen (%rax)
+    irmovq $1, %rcx        # Apuarvo: 1
+    subq %rcx, %rsi        # Vähennä kertoimesta (%rsi) 1
+    jne loop               # Jos kerroin ei ole nolla, toista silmukka
+
+done:
+    halt                   # Lopeta ohjelman suoritus
+    
